@@ -11,8 +11,8 @@
           </header>
 
           <a-form class="login-form__main" :model="formData" :rules="formRules" ref="formRef">
-            <a-form-item name="account">
-              <a-input size="large" v-model:value="formData.account" placeholder="username: vben" />
+            <a-form-item name="email">
+              <a-input size="large" v-model:value="formData.email" placeholder="username: vben" />
             </a-form-item>
             <a-form-item name="password">
               <a-input-password
@@ -95,7 +95,7 @@
       const { t } = useI18n();
 
       const formData = reactive({
-        account: 'vben',
+        email: 'jinmao88@qq.com',
         password: '123456',
       });
 
@@ -104,7 +104,7 @@
       });
 
       const formRules = reactive({
-        account: [{ required: true, message: t('sys.login.accountPlaceholder'), trigger: 'blur' }],
+        email: [{ required: true, message: t('sys.login.accountPlaceholder'), trigger: 'blur' }],
         password: [
           { required: true, message: t('sys.login.passwordPlaceholder'), trigger: 'blur' },
         ],
@@ -119,7 +119,7 @@
           const userInfo = await userStore.login(
             toRaw({
               password: data.password,
-              username: data.account,
+              email: data.email,
             })
           );
           if (userInfo) {

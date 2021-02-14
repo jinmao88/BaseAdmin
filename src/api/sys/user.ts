@@ -1,15 +1,10 @@
 import { defHttp } from '/@/utils/http/axios';
-import {
-  LoginParams,
-  LoginResultModel,
-  GetUserInfoByUserIdParams,
-  GetUserInfoByUserIdModel,
-} from './model/userModel';
+import { LoginParams, GetUserInfoByUserIdParams } from './model/userModel';
 import { ErrorMessageMode } from '/@/utils/http/axios/types';
 
 enum Api {
   Login = '/login',
-  GetUserInfoById = '/getUserInfoById',
+  GetUserInfoById = 'api/user/info',
   GetPermCodeByUserId = '/getPermCodeByUserId',
 }
 
@@ -17,7 +12,7 @@ enum Api {
  * @description: user login api
  */
 export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') {
-  return defHttp.request<LoginResultModel>(
+  return defHttp.request(
     {
       url: Api.Login,
       method: 'POST',
@@ -32,11 +27,10 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
 /**
  * @description: getUserInfoById
  */
-export function getUserInfoById(params: GetUserInfoByUserIdParams) {
-  return defHttp.request<GetUserInfoByUserIdModel>({
+export function getUserInfo() {
+  return defHttp.request({
     url: Api.GetUserInfoById,
-    method: 'GET',
-    params,
+    method: 'POST',
   });
 }
 

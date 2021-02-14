@@ -1,8 +1,4 @@
-import type {
-  LoginParams,
-  GetUserInfoByUserIdModel,
-  GetUserInfoByUserIdParams,
-} from '/@/api/sys/model/userModel';
+import type { LoginParams, GetUserInfoByUserIdModel } from '/@/api/sys/model/userModel';
 
 import store from '/@/store/index';
 import { VuexModule, Module, getModule, Mutation, Action } from 'vuex-module-decorators';
@@ -16,7 +12,7 @@ import { useMessage } from '/@/hooks/web/useMessage';
 
 import router from '/@/router';
 
-import { loginApi, getUserInfoById } from '/@/api/sys/user';
+import { loginApi, getUserInfo } from '/@/api/sys/user';
 
 import { setLocal, getLocal, getSession, setSession } from '/@/utils/helper/persistent';
 import { useProjectSetting } from '/@/hooks/setting';
@@ -104,14 +100,12 @@ class User extends VuexModule {
     try {
       const { goHome = true, mode, ...loginParams } = params;
       const data = await loginApi(loginParams, mode);
-
-      const { token, userId } = data;
-
+      const { token } = data;
       // save token
       this.commitTokenState(token);
 
       // get user info
-      const userInfo = await this.getUserInfoAction({ userId });
+      const userInfo = await this.getUserInfo();
 
       goHome && (await router.replace(PageEnum.BASE_HOME));
       return userInfo;
@@ -121,8 +115,8 @@ class User extends VuexModule {
   }
 
   @Action
-  async getUserInfoAction({ userId }: GetUserInfoByUserIdParams) {
-    const userInfo = await getUserInfoById({ userId });
+  async getUserInfo() {
+    const userInfo = await getUserInfo();
     const { roles } = userInfo;
     const roleList = roles.map((item) => item.value) as RoleEnum[];
     this.commitUserInfoState(userInfo);
